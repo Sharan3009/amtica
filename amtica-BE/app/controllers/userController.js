@@ -31,7 +31,7 @@ let signUpFunction = (req, res) => {
                 }
             } else {
                 logger.error('Field Missing during User creation','User Controller : validateUserInput' , 5)
-                let apiResponse = response.generate(true,'One or more Parameter(s) is missing',400,null)
+                let apiResponse = response.generate(true,'Email or Password is missing',400,null)
                 reject(apiResponse)
             }
         })
@@ -43,7 +43,7 @@ let signUpFunction = (req, res) => {
             .exec((err, retrievedUserDetails)=>{
                 if(err){
                     logger.error(err.message,'User Controller : createUser',5)
-                    let apiResponse = response.generate(true,'Failed to create User',400,null)
+                    let apiResponse = response.generate(true,'Failed to create User',500,null)
                     reject(apiResponse)
                 } else if (check.isEmpty(retrievedUserDetails)) {
                     let newUser = new UserModel({
@@ -58,7 +58,7 @@ let signUpFunction = (req, res) => {
                         if(err){
                             console.log(err)
                             logger.error(err.message,'User Controller : createUser', 10)
-                            let apiResponse = response.generate(true,'Failed to create new user',400,null)
+                            let apiResponse = response.generate(true,'Failed to create new user',500,null)
                             reject(apiResponse)
                         } else {
                             // delete keyword will not working until you convert it to js object using toObject()
@@ -98,7 +98,7 @@ let loginFunction = (req, res) => {
                     if(err){
                         console.log(err)
                         logger.error('Failed to Retrieve User Data', 'User Controller : findUser',5)
-                        let apiResponse = response.generate(true,'Failed to find the user',400,null)
+                        let apiResponse = response.generate(true,'Failed to find the user',500,null)
                         reject(apiResponse)
                     } else if (check.isEmpty(userDetails)) {
                         logger.error('No User Found','User Controller : findUser',5)
@@ -133,7 +133,7 @@ let loginFunction = (req, res) => {
                     resolve(retrievedUserDetailsObj)
                 } else {
                     logger.error('Login failed due to incorrect password','User Controller : validatePassword',5)
-                    let apiResponse = response.generate(true,'Wrong password . Login Failed',500,null)
+                    let apiResponse = response.generate(true,'Wrong password . Login Failed',401,null)
                     reject(apiResponse)
                 }
             })
@@ -163,7 +163,7 @@ let loginFunction = (req, res) => {
             .exec((err, retrievedTokenDetails)=>{
                 if(err){
                     logger.error(err.message,'User Controller : saveToken',5)
-                    let apiResponse = response.generate(true,'Failed to generate token',400,null)
+                    let apiResponse = response.generate(true,'Failed to generate token',500,null)
                     reject(apiResponse)
                 } else if (check.isEmpty(retrievedTokenDetails)) {
                     let newAuthToken = new AuthModel({
@@ -177,7 +177,7 @@ let loginFunction = (req, res) => {
                         if(err){
                             console.log(err)
                             logger.error(err.message,'User Controller : saveToken', 10)
-                            let apiResponse = response.generate(true,'Failed to generate new token',400,null)
+                            let apiResponse = response.generate(true,'Failed to save new token',500,null)
                             reject(apiResponse)
                         } else {
                             let responseBody = {
@@ -195,7 +195,7 @@ let loginFunction = (req, res) => {
                         if(err){
                             console.log(err)
                             logger.error(err.message,'User Controller : saveToken',10)
-                            let apiResponse = response.generate(true,'Failed to generate Token',400,null)
+                            let apiResponse = response.generate(true,'Failed to save Token',500,null)
                             reject(apiResponse)
                         } else {
                             let responseBody = {
