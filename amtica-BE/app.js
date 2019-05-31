@@ -84,7 +84,10 @@ function onListening(){
 	: 'port ' + addr.port;
 	('Listening on ' + bind)
 	logger.info('server listening on port ' + addr.port,'serverOnListeningHandler', 10)
-	let db = mongoose.connect(appConfig.db.uri, { useNewUrlParser : true })
+	let db = mongoose.connect(appConfig.db.uri, { 
+		useCreateIndex: true,  // to suppress the deprecated warning = DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+		useNewUrlParser : true 
+	})
 }
 
 process.on('unhandleRejection',(reason,p)=>{
