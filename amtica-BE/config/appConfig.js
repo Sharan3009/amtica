@@ -3,7 +3,7 @@ let appConfig = {};
 appConfig.port = 3000;
 appConfig.env = "dev";
 appConfig.db = {
-    uri: 'mongodb://127.0.0.1:27017/amtica'
+    uri: 'mongodb://127.0.0.1:27017/amticaDB'
 };
 appConfig.apiVersion = '/api/v1';
 

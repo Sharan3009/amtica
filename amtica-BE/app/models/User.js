@@ -1,17 +1,18 @@
 'use strict'
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const timeLib = require('../libs/timeLib')
 const Schema = mongoose.Schema;
 
 let userSchema = new Schema({
   userId: {
     type: String,
-    default: '',
     index: true,
-    unique: true
+    unique: true,
+    required: true
   },
   firstName: {
     type: String,
-    default: ''
+    required: true
   },
   lastName: {
     type: String,
@@ -19,23 +20,16 @@ let userSchema = new Schema({
   },
   password: {
     type: String,
-    default: 'passskdajakdjkadsj'
+    required: true
   },
   email: {
     type: String,
-    default: ''
-  },
-  mobileNumber: {
-    type: Number,
-    default: 0
+    required: true
   },
   createdOn :{
     type:Date,
-    default:""
+    default: timeLib.now()
   }
-
-
 })
-
 
 mongoose.model('User', userSchema);
