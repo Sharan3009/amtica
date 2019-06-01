@@ -1,29 +1,50 @@
 <div class="container-fluid my-auto">
   <div class="row h-100">
     <div class="col-12">
-      <div class="modal-content mx-auto modal-dialog">
+      <div class="modal-content mx-auto my-auto modal-dialog">
         <div class="container">
           <div class="row modal-header">
             <div class="col-12 d-flex justify-content-center">
-              <h1><span class="text-dark">Amtica</span></h1>
+              <h1><span class="text-success font-weight-bold">Sign Up</span></h1>
             </div>
           </div>
           <div class="modal-body">
             <div class="col-12">
-              <form #createUser="ngForm" (ngSubmit)="signUp(createUser)">
+              <form [formGroup]="_signUpGroup">
                 <div class="form-group">
                   <mat-form-field class="w-100">
-                    <input matInput placeholder="Email" [formControl]="email" required>
-                    <mat-error *ngIf="email.invalid" [innerHTML]="getErrorMessage('email')"></mat-error>
+                    <input matInput placeholder="Email" formControlName="email" required>
+                    <mat-error *ngIf="_signUpGroup.get('email').invalid" [innerHTML]="getErrorMessage('email')"></mat-error>
                   </mat-form-field>
                 </div>
                 <div class="form-group">
                   <mat-form-field class="w-100">
-                    <input matInput placeholder="Password" [formControl]="password" required [type]="hidePassword ? 'password' : 'text'">
-                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                      <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <input matInput placeholder="First Name" formControlName="firstName" required>
+                    <mat-error *ngIf="_signUpGroup.get('firstName').invalid" [innerHTML]="getErrorMessage('firstName')"></mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-group">
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="Last Name" formControlName="lastName">
+                  </mat-form-field>
+                </div>
+                <div class="form-group">
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="Password" formControlName="password" required [type]="_hide.password ? 'password' : 'text'">
+                    <button tabindex="-1" mat-icon-button matSuffix (click)="_hide.password = !_hide.password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                      <mat-icon>{{_hide.password ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
-                    <mat-error *ngIf="password.invalid" [innerHTML]="getErrorMessage('password')"></mat-error>
+                    <mat-error *ngIf="_signUpGroup.get('password').invalid" [innerHTML]="getErrorMessage('password')"></mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-group">
+                  <mat-form-field class="w-100">
+                    <input matInput placeholder="Confirm Password" [errorStateMatcher]="_matcher" required type="password" formControlName="confirmPassword" [type]="_hide.confirmPassword ? 'password' : 'text'">
+                    <button tabindex="-1" mat-icon-button matSuffix (click)="_hide.confirmPassword = !_hide.confirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                      <mat-icon>{{_hide.confirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error [innerHTML]="getErrorMessage('confirmPassword')"></mat-error>
+                    <mat-hint *ngIf="_signUpGroup.get('confirmPassword').valid"><b class="text-success">Passwords Matched</b></mat-hint>
                   </mat-form-field>
                 </div>
                 <div class="modal-footer border-top-0 container">
@@ -32,7 +53,7 @@
                       <button mat-button>Login</button>
                     </a>
                   </div>
-                  <button mat-raised-button color="primary" type="submit" class="btn btn-success" [disabled]="!createUser.form.valid">Sign Up</button>
+                  <button mat-raised-button color="primary" type="submit" [disabled]="disableSubmit()">Submit</button>
                 </div>
               </form>
             </div>
