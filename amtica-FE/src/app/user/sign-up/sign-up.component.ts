@@ -48,8 +48,8 @@ export class SignUpComponent extends AppComponent implements OnInit {
     })
   }
 
-  private signUp(user):void{
-
+  private signUp():void{
+    this._signUpGroup.setErrors({errors:true})
   }
 
 }

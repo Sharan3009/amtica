@@ -1,5 +1,5 @@
 <app-float-form headerText="Login">
-  <form [formGroup]="_loginGroup">
+  <form [formGroup]="_loginGroup" (submit)="signIn()">
     <div class="form-group">
       <mat-form-field class="w-100">
         <input matInput placeholder="Email" formControlName="email" required>

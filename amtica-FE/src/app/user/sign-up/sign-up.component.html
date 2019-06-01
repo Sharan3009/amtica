@@ -1,5 +1,5 @@
 <app-float-form headerText="Sign Up">
-  <form [formGroup]="_signUpGroup">
+  <form [formGroup]="_signUpGroup" (ngSubmit)="signUp()">
     <div class="form-group">
       <mat-form-field class="w-100">
         <input matInput placeholder="Email" formControlName="email" required>
