@@ -5,11 +5,19 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { userRouterConfig } from './user.routes';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule } from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(userRouterConfig)
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forChild(userRouterConfig),
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
   ],
   declarations: [
     SignUpComponent,

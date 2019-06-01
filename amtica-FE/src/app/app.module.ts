@@ -5,7 +5,9 @@ import{ RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { UserModule } from './user/user.module';
 import { UserService } from './api/user.service';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,8 +16,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     RouterModule.forRoot([]),
+    FormsModule,
+    ReactiveFormsModule,
     UserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent]
