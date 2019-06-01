@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { userRouterConfig } from './user.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule } from '@angular/material';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule } fr
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(userRouterConfig),
+    SharedModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
