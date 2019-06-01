@@ -215,7 +215,7 @@ let loginFunction = (req, res) => {
     .then(generateToken)
     .then(saveToken)
     .then((resolve)=>{
-        let apiResponse = response.generate(false,'Login successful',200,resolve)
+        let apiResponse = response.generate(false,'Successfully login',200,resolve)
         res.send(apiResponse)
     })
     .catch((err)=>{
