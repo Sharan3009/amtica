@@ -5,6 +5,7 @@ import{ RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { UserModule } from './user/user.module';
 import { UserService } from './api/user.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { UserService } from './api/user.service';
   imports: [
     BrowserModule,
     RouterModule.forRoot([]),
-    UserModule
+    UserModule,
+    BrowserAnimationsModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent]
