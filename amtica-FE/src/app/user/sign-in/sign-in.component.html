@@ -15,13 +15,6 @@
         <mat-error [innerHTML]="getErrorMessage('password',_loginGroup)"></mat-error>
       </mat-form-field>
     </div>
-    <div class="modal-footer border-top-0 container">
-      <div class="col">
-        <a [routerLink]="['/signup']">
-          <button type="button" mat-button>Create Account</button>
-        </a>
-      </div>
-      <button mat-raised-button color="primary" type="submit" [disabled]="disableSubmit(_loginGroup)">Submit</button>
-    </div>
+    <app-float-form-footer [route]="['/signup']" routeText="Create Account" [disableSubmit]="disableSubmit(_loginGroup)"></app-float-form-footer>
   </form>
 </app-float-form>

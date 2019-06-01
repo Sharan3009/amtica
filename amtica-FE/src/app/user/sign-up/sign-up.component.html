@@ -36,13 +36,6 @@
         <mat-hint *ngIf="_signUpGroup.get('confirmPassword').valid"><b class="text-success">Passwords Matched</b></mat-hint>
       </mat-form-field>
     </div>
-    <div class="modal-footer border-top-0 container">
-      <div class="col">
-        <a [routerLink]="['/login']">
-          <button type="button" mat-button>Login</button>
-        </a>
-      </div>
-      <button mat-raised-button color="primary" type="submit" [disabled]="disableSubmit(_signUpGroup)">Submit</button>
-    </div>
+    <app-float-form-footer [route]="['/login']" routeText="Login" [disableSubmit]="disableSubmit(_signUpGroup)"></app-float-form-footer>
   </form>
 </app-float-form>
