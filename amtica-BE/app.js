@@ -42,6 +42,9 @@ fs.readdirSync(routesPath).forEach(function(file){
     }
 })
 
+app.get('*',(req,res)=>{
+	res.sendFile(path.resolve('public/index.html'));
+});
 app.use(globalErrorMiddleware.globalNotFoundHandler);
 
 //this will connect to port and database
