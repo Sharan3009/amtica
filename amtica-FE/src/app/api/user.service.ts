@@ -23,14 +23,17 @@ export class UserService {
     const params = new HttpParams()
     .set('email',data.email)
     .set('password',data.password)
-    return this.http.post(`${this.baseUrl}/users/login/`,params)
+    return this.http.post(`${this.baseUrl}users/login/`,params)
     .pipe(catchError(this.handleErrorApi))
   }
 
-  public logoutApi(data):Observable<any>{
-    const params = new HttpParams()
-    .set('userId',data.userId)
-    return this.http.post(`${this.baseUrl}/users/logout/`,params)
+  public loginStatusApi(): Observable<any> {
+    return this.http.get(`${this.baseUrl}users/loginStatus/`)
+    .pipe(catchError(this.handleErrorApi))
+  }
+
+  public logoutApi():Observable<any>{
+    return this.http.post(`${this.baseUrl}users/logout/`,{})
     .pipe(catchError(this.handleErrorApi))
   }
   

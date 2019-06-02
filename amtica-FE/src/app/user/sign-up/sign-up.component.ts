@@ -26,6 +26,19 @@ export class SignUpComponent extends AppComponent implements OnInit {
 
   ngOnInit() {
     this.reverseCheckUnMatchPassword();
+    this.checkIfUserLoggedIn();
+  }
+
+  private checkIfUserLoggedIn(){
+    this._userService.loginStatusApi()
+    .subscribe((apiResponse)=>{
+      if (apiResponse.status === 200) {
+        this._router.navigate(["/login"])
+      }
+    },(error)=>{
+      console.log(error)
+      this._toastr.error(error.message);
+    })
   }
 
   private unMatchPassword(ac: AbstractControl){

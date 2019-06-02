@@ -171,7 +171,6 @@ let loginFunction = (req, res) => {
                     let newAuthToken = new AuthModel({
                         userId : tokenDetails.userId,
                         authToken : tokenDetails.token,
-                        tokenDetails : tokenDetails.tokenDetails,
                         tokenSecret : tokenDetails.tokenSecret,
                         tokenGenerationTime : time.now()
                     })
@@ -182,10 +181,8 @@ let loginFunction = (req, res) => {
                             let apiResponse = response.generate(true,'Failed to save new token',500,null)
                             reject(apiResponse)
                         } else {
-                            let responseBody = {
-                                authToken : newTokenDetails.authToken,
-                                userDetails : tokenDetails.userDetails
-                            }
+                            res.cookie("auth_token",newTokenDetails.authToken);
+                            let responseBody = tokenDetails.userDetails;
                             resolve(responseBody)
                         }
                     })
@@ -200,10 +197,8 @@ let loginFunction = (req, res) => {
                             let apiResponse = response.generate(true,'Failed to save Token',500,null)
                             reject(apiResponse)
                         } else {
-                            let responseBody = {
-                                authToken : newTokenDetails.authToken,
-                                userDetails : tokenDetails.userDetails
-                            }
+                            res.cookie("auth_token",newTokenDetails.authToken);
+                            let responseBody = tokenDetails.userDetails;
                             resolve(responseBody)
                         }
                     })
@@ -226,9 +221,71 @@ let loginFunction = (req, res) => {
     })
 }
 
+let ifLoggedIn = (req, res) => {
+    let ifCookieExist=()=>{
+        return new Promise((resolve,reject)=>{
+            let cookie = req.cookies["auth_token"];
+            if(cookie){
+                AuthModel.findOne({authToken : cookie })
+                .exec((err, retrievedTokenDetails)=>{
+                    if(err){
+                        logger.error(err.message,'User Controller : ifCookieExist',5)
+                        let apiResponse = response.generate(true,'Failed to find token',500,null)
+                        reject(apiResponse)
+                    } else if (check.isEmpty(retrievedTokenDetails)) {
+                        logger.error("No Token details found",'User Controller : ifCookieExist',5)
+                        let apiResponse = response.generate(true,'Failed to find token',500,null)
+                        reject(apiResponse)
+                    } else {
+                        resolve(retrievedTokenDetails.userId);
+                    } 
+                })
+            } else {
+                logger.error("Cookie does not exist",'User Controller : ifCookieExist',5)
+                let apiResponse = response.generate(true,'cookie is empty',500,null)
+                reject(apiResponse)
+            }
+        })
+    }
+
+    let getUserDetails=(userId)=>{
+        return new Promise((resolve,reject)=>{
+            UserModel.findOne({userId: userId},(err,userDetails)=>{
+                if(err){
+                    console.log(err)
+                    logger.error('Failed to Retrieve User Data', 'User Controller : getUserDetails',5);
+                    let apiResponse = response.generate(true,'Failed to find the user',500,null);
+                    reject(apiResponse);
+                } else if (check.isEmpty(userDetails)) {
+                    logger.error('No User Found','User Controller : getUserDetails',5);
+                    let apiResponse = response.generate(true,'No User Details Found',400,null);
+                    reject(apiResponse);
+                } else {
+                    logger.info('User Found','User Controller : getUserDetails',5);
+                    let userDetailsObj = userDetails.toObject();
+                    delete userDetailsObj.password;
+                    delete userDetailsObj._id;
+                    delete userDetailsObj.__v;
+                    resolve(userDetailsObj);
+                }
+            })
+        })
+    }
+    ifCookieExist(req,res)
+    .then(getUserDetails)
+    .then((resolve)=>{
+        let apiResponse = response.generate(false,'User exists',200,resolve)
+        res.send(apiResponse)
+    })
+    .catch((err)=>{
+        console.log(err)
+        res.send(err)
+    })
+}
+
 // Logout function.
 let logout = (req, res) => {
-    AuthModel.remove({ userId: req.body.userId },(err,result)=>{
+    AuthModel.deleteOne({ authToken: req.cookies["auth_token"] },(err,result)=>{
         if(err) {
             console.log(err)
             logger.error(err.message , 'User Controller : logout',10)
@@ -238,6 +295,7 @@ let logout = (req, res) => {
             let apiResponse = response.generate(true,'Already logged out or invalid user',404,null)
             res.send(apiResponse)
         } else {
+            res.clearCookie("auth_token");
             let apiResponse = response.generate(false,'Logged out successfully',200,result)
             res.send(apiResponse)
         }
@@ -249,6 +307,7 @@ module.exports = {
 
     signUpFunction: signUpFunction,
     loginFunction: loginFunction,
+    ifLoggedIn: ifLoggedIn,
     logout: logout
 
 }
