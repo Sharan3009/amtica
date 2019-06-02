@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { MyErrorStateMatcher } from './errorStateMatcher';
 import { AppComponent } from 'src/app/app.component';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/api/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,7 +20,7 @@ export class SignUpComponent extends AppComponent implements OnInit {
     confirmPassword : new FormControl('', [Validators.required,this.unMatchPassword])
   })
   private _matcher = new MyErrorStateMatcher();
-  constructor() { 
+  constructor(private _toastr: ToastrService,private _userService: UserService, private _router: Router) { 
     super();
   }
 
@@ -49,7 +52,42 @@ export class SignUpComponent extends AppComponent implements OnInit {
   }
 
   private signUp():void{
-    this._signUpGroup.setErrors({errors:true})
+    this._signUpGroup.setErrors({errors:true});
+    let suffixText = "is invalid";
+    let data={
+      email : this._signUpGroup.get('email').value.toLowerCase(),
+      firstName: this._signUpGroup.get('firstName').value,
+      lastName : this._signUpGroup.get('lastName').value || '',
+      password : this._signUpGroup.get('password').value
+    }
+
+    if(this._signUpGroup.get('email').invalid){
+      this._toastr.error(`Email ${suffixText}`)
+    } else if(this._signUpGroup.get('firstName').invalid){
+      this._toastr.error(`First Name ${suffixText}`)
+    } else if(this._signUpGroup.get('password').invalid){
+      this._toastr.error(`Password ${suffixText}`)
+    } else if(data.password !== this._signUpGroup.get('confirmPassword').value){
+      this._toastr.error(`Passwords do not match`)
+    } else{
+      this._userService.signupApi(data)
+      .subscribe((apiResponse)=>{
+        if(apiResponse.status === 200){
+          data['activateUserToken'] = apiResponse.data.activateUserToken
+          this._toastr.success("Account created successfully")
+          setTimeout(()=>{
+            this._router.navigate(['/'])
+          },1000)
+        } else {
+          this._toastr.warning(apiResponse.message)
+        }
+        this._signUpGroup.setErrors(null);
+      },(err)=>{
+        console.log(err)
+        this._toastr.error(err.message);
+        this._signUpGroup.setErrors(null);
+      })
+    }
   }
 
 }

@@ -6,6 +6,5 @@ import { HomeComponent } from "./home/home.component";
 export const userRouterConfig: Routes = [
     { path: 'signup', component: SignUpComponent },
     { path: 'login', component: SignInComponent },
-    { path: 'home', component: HomeComponent },
     { path: '**', redirectTo:'login', pathMatch:'full' }
 ]

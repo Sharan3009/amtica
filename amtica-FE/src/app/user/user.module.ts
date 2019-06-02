@@ -6,7 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { userRouterConfig } from './user.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatDialogModule } from '@angular/material';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -19,12 +19,14 @@ import { SharedModule } from '../shared/shared.module';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule
   ],
   declarations: [
     SignUpComponent,
     SignInComponent,
     HomeComponent,
-  ]
+  ],
+  entryComponents: [HomeComponent]
 })
 export class UserModule { }

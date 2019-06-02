@@ -5,7 +5,9 @@ const time = require('./../libs/timeLib');
 const response = require('./../libs/responseLib')
 const logger = require('./../libs/loggerLib');
 const validateInput = require('../libs/paramsValidationLib')
-const check = require('../libs/checkLib')
+const check = require('../libs/checkLib');
+const passwordLib = require('../libs/generatePasswordLib');
+const token = require('../libs/tokenLib');
 
 /* Models */
 const UserModel = mongoose.model('User');
