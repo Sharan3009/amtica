@@ -1,20 +1,20 @@
 <app-float-form headerText="Login">
-  <form [formGroup]="_loginGroup" (submit)="signIn()">
+  <form [formGroup]="loginGroup" (submit)="signIn()">
     <div class="form-group">
       <mat-form-field class="w-100">
         <input matInput placeholder="Email" formControlName="email" required>
-        <mat-error [innerHTML]="getErrorMessage('email',_loginGroup)"></mat-error>
+        <mat-error [innerHTML]="getErrorMessage('email',loginGroup)"></mat-error>
       </mat-form-field>
     </div>
     <div class="form-group">
       <mat-form-field class="w-100">
-        <input matInput placeholder="Password" formControlName="password" required [type]="_hide.password ? 'password' : 'text'">
-        <button tabindex="-1" type="button" mat-icon-button matSuffix (click)="_hide.password = !_hide.password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-          <mat-icon>{{_hide.password ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <input matInput placeholder="Password" formControlName="password" required [type]="hide.password ? 'password' : 'text'">
+        <button tabindex="-1" type="button" mat-icon-button matSuffix (click)="hide.password = !hide.password" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide.password ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
-        <mat-error [innerHTML]="getErrorMessage('password',_loginGroup)"></mat-error>
+        <mat-error [innerHTML]="getErrorMessage('password',loginGroup)"></mat-error>
       </mat-form-field>
     </div>
-    <app-float-form-footer [route]="['/signup']" routeText="Create Account" [disableSubmit]="disableSubmit(_loginGroup)"></app-float-form-footer>
+    <app-float-form-footer [route]="['/signup']" routeText="Create Account" [disableSubmit]="disableSubmit(loginGroup)"></app-float-form-footer>
   </form>
 </app-float-form>

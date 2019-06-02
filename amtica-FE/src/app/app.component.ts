@@ -7,14 +7,14 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  protected _hide = {password:true, confirmPassword:true};
-  protected disableSubmit(group: FormGroup):boolean{
+  public hide = {password:true, confirmPassword:true};
+  public disableSubmit(group: FormGroup):boolean{
     if(group.invalid){
       return true;
     }
       return false;
   }
-  private getErrorMessage(type:string, group:FormGroup):string {
+  public getErrorMessage(type:string, group:FormGroup):string {
     let error:string = "Please enter in correct format";
     if(type === "email"){
       error = group.get('email').hasError('required') ? 'Email cannot be empty' :

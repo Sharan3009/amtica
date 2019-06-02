@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent extends AppComponent implements OnInit {
-  private _loginGroup = new FormGroup({
+  public loginGroup = new FormGroup({
     email : new FormControl('', [Validators.required]),
     password : new FormControl('', [Validators.required]),
   })
@@ -41,11 +41,11 @@ export class SignInComponent extends AppComponent implements OnInit {
     })
   }
 
-  private signIn():any{
-    this._loginGroup.setErrors({errors:true});
+  public signIn():any{
+    this.loginGroup.setErrors({errors:true});
     let data = {
-      email: this._loginGroup.get('email').value,
-      password: this._loginGroup.get('password').value
+      email: this.loginGroup.get('email').value,
+      password: this.loginGroup.get('password').value
     }
     this._userService.loginApi(data)
     .subscribe((apiResponse) => {
@@ -59,11 +59,11 @@ export class SignInComponent extends AppComponent implements OnInit {
       } else {
         this._toastr.warning(apiResponse.message)
       }
-      this._loginGroup.setErrors(null);
+      this.loginGroup.setErrors(null);
     }, (err) => {
       console.log(err)
       this._toastr.error(err.message);
-      this._loginGroup.setErrors(null);
+      this.loginGroup.setErrors(null);
     })
   }
 

@@ -12,14 +12,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent extends AppComponent implements OnInit {
-  private _signUpGroup = new FormGroup({
+  public signUpGroup = new FormGroup({
     email : new FormControl('', [Validators.required, Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/) ]),
     firstName : new FormControl('', [Validators.required]),
     lastName : new FormControl(),
     password : new FormControl('', [Validators.required, Validators.minLength(8)]),
     confirmPassword : new FormControl('', [Validators.required,this.unMatchPassword])
   })
-  private _matcher = new MyErrorStateMatcher();
+  public matcher = new MyErrorStateMatcher();
   constructor(private _toastr: ToastrService,private _userService: UserService, private _router: Router) { 
     super();
   }
@@ -52,10 +52,10 @@ export class SignUpComponent extends AppComponent implements OnInit {
   }
 
   private reverseCheckUnMatchPassword():any{
-    this._signUpGroup.get('password')
+    this.signUpGroup.get('password')
     .valueChanges
     .subscribe((value)=>{
-      let confirmPassword = this._signUpGroup.get('confirmPassword');
+      let confirmPassword = this.signUpGroup.get('confirmPassword');
       if(value && confirmPassword.value && value === confirmPassword.value){
       confirmPassword.setErrors(null);
       } else {
@@ -64,23 +64,23 @@ export class SignUpComponent extends AppComponent implements OnInit {
     })
   }
 
-  private signUp():void{
-    this._signUpGroup.setErrors({errors:true});
+  public signUp():void{
+    this.signUpGroup.setErrors({errors:true});
     let suffixText = "is invalid";
     let data={
-      email : this._signUpGroup.get('email').value.toLowerCase(),
-      firstName: this._signUpGroup.get('firstName').value,
-      lastName : this._signUpGroup.get('lastName').value || '',
-      password : this._signUpGroup.get('password').value
+      email : this.signUpGroup.get('email').value.toLowerCase(),
+      firstName: this.signUpGroup.get('firstName').value,
+      lastName : this.signUpGroup.get('lastName').value || '',
+      password : this.signUpGroup.get('password').value
     }
 
-    if(this._signUpGroup.get('email').invalid){
+    if(this.signUpGroup.get('email').invalid){
       this._toastr.error(`Email ${suffixText}`)
-    } else if(this._signUpGroup.get('firstName').invalid){
+    } else if(this.signUpGroup.get('firstName').invalid){
       this._toastr.error(`First Name ${suffixText}`)
-    } else if(this._signUpGroup.get('password').invalid){
+    } else if(this.signUpGroup.get('password').invalid){
       this._toastr.error(`Password ${suffixText}`)
-    } else if(data.password !== this._signUpGroup.get('confirmPassword').value){
+    } else if(data.password !== this.signUpGroup.get('confirmPassword').value){
       this._toastr.error(`Passwords do not match`)
     } else{
       this._userService.signupApi(data)
@@ -94,11 +94,11 @@ export class SignUpComponent extends AppComponent implements OnInit {
         } else {
           this._toastr.warning(apiResponse.message)
         }
-        this._signUpGroup.setErrors(null);
+        this.signUpGroup.setErrors(null);
       },(err)=>{
         console.log(err)
         this._toastr.error(err.message);
-        this._signUpGroup.setErrors(null);
+        this.signUpGroup.setErrors(null);
       })
     }
   }

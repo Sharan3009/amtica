@@ -9,9 +9,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private header:string;
-  private fullName: string;
-  private body: string;
+  public header:string;
+  public fullName: string;
+  public body: string;
   constructor(@Inject(MAT_DIALOG_DATA) private _data: any, private _userService:UserService, private _toastr:ToastrService, private _matDialog: MatDialog) { }
 
   ngOnInit() {
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
     this.body = this._data.body;
   }
 
-  private logout(){
+  public logout(){
     this._userService.logoutApi()
     .subscribe((apiResponse)=>{
       if(apiResponse.status === 200){
