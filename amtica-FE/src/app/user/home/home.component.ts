@@ -12,7 +12,8 @@ export class HomeComponent implements OnInit {
   public header:string;
   public fullName: string;
   public body: string;
-  constructor(@Inject(MAT_DIALOG_DATA) private _data: any, private _userService:UserService, private _toastr:ToastrService, private _matDialog: MatDialog) { }
+  // injecting data from MatDialog settings
+  constructor(@Inject(MAT_DIALOG_DATA) private _data: any, private _userService:UserService, private _toastr:ToastrService) { }
 
   ngOnInit() {
     this.header = this._data.header;
@@ -20,12 +21,12 @@ export class HomeComponent implements OnInit {
     this.body = this._data.body;
   }
 
+  // calling logout function on click of logout button
   public logout(){
     this._userService.logoutApi()
     .subscribe((apiResponse)=>{
       if(apiResponse.status === 200){
         this._toastr.success("You are logged out successfully")
-        this._matDialog.closeAll();
       } else {
         this._toastr.error(apiResponse.error);
       }

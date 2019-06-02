@@ -24,6 +24,8 @@ export class SignInComponent extends AppComponent implements OnInit {
     this.checkIfUserLoggedIn();
   }
 
+  //  if user is logged in then show the user dialog, else nothing
+  // Here we are sending the message "Welcome back"
   private checkIfUserLoggedIn(){
     this._userService.loginStatusApi()
     .subscribe((apiResponse)=>{
@@ -41,6 +43,7 @@ export class SignInComponent extends AppComponent implements OnInit {
     })
   }
 
+  // on success login, we are sending the message "Welcome"
   public signIn():any{
     this.loginGroup.setErrors({errors:true});
     let data = {
@@ -67,6 +70,7 @@ export class SignInComponent extends AppComponent implements OnInit {
     })
   }
 
+  // settings to show loggedin dialog
   private showLoggedInDialog(data){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -78,6 +82,7 @@ export class SignInComponent extends AppComponent implements OnInit {
     this._matDialog.open(HomeComponent,dialogConfig);
   }
 
+  // function to get full name from data object
   private getFullname(obj){
     let fullname =  obj.firstName + ' ' +obj.lastName;
     return fullname.trim();

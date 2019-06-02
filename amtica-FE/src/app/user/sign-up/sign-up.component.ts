@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent extends AppComponent implements OnInit {
+  /* using formGroup to create bunch of formcontrols form. Final validation of all the form controls together
+  / is applied on formGroup */
   public signUpGroup = new FormGroup({
     email : new FormControl('', [Validators.required, Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/) ]),
     firstName : new FormControl('', [Validators.required]),
@@ -29,11 +31,12 @@ export class SignUpComponent extends AppComponent implements OnInit {
     this.checkIfUserLoggedIn();
   }
 
+  // check if user is loggedin using auth_token key, If loggedin then redirect to login
   private checkIfUserLoggedIn(){
     this._userService.loginStatusApi()
     .subscribe((apiResponse)=>{
       if (apiResponse.status === 200) {
-        this._router.navigate(["/login"])
+        this._router.navigate(["/login"]) // redirecting to login page if user is logged in
       }
     },(error)=>{
       console.log(error)
@@ -41,30 +44,35 @@ export class SignUpComponent extends AppComponent implements OnInit {
     })
   }
 
+  // custom validation for confirm password input formcontrol
   private unMatchPassword(ac: AbstractControl){
     let password = ac.root.get('password')
     let confirmPassword = ac.value;
     if(password && confirmPassword === password.value){
-      return null;
+      return null; // if passwords matched then return null, i.e not error
     } else {
-      return { unMatchPassword : true };
+      return { unMatchPassword : true }; // else return an error so that submit button stays disabled
     }
   }
 
+  /* if Passwords Matched success validation, but after this validation, user changes the password field (not confirmpasssword field)
+  then to change back the "Passwords Matched" to "Passwords do not match"*/
   private reverseCheckUnMatchPassword():any{
     this.signUpGroup.get('password')
     .valueChanges
     .subscribe((value)=>{
       let confirmPassword = this.signUpGroup.get('confirmPassword');
       if(value && confirmPassword.value && value === confirmPassword.value){
-      confirmPassword.setErrors(null);
+        confirmPassword.setErrors(null);
       } else {
         confirmPassword.setErrors({unMatchPassword:true});
       }
     })
   }
 
+  // to call signup api on submit button
   public signUp():void{
+    // setting error, so that button goes disabled when submitted the form
     this.signUpGroup.setErrors({errors:true});
     let suffixText = "is invalid";
     let data={
@@ -86,7 +94,6 @@ export class SignUpComponent extends AppComponent implements OnInit {
       this._userService.signupApi(data)
       .subscribe((apiResponse)=>{
         if(apiResponse.status === 200){
-          data['activateUserToken'] = apiResponse.data.activateUserToken
           this._toastr.success("Account created successfully")
           setTimeout(()=>{
             this._router.navigate(['/'])
@@ -94,6 +101,7 @@ export class SignUpComponent extends AppComponent implements OnInit {
         } else {
           this._toastr.warning(apiResponse.message)
         }
+        // re enabling the button on success or error again
         this.signUpGroup.setErrors(null);
       },(err)=>{
         console.log(err)

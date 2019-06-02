@@ -7,13 +7,19 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  // variable to hide or show the password
   public hide = {password:true, confirmPassword:true};
+
+  // status to check whether to disable submit button or not in both signup and signin page
   public disableSubmit(group: FormGroup):boolean{
     if(group.invalid){
       return true;
     }
       return false;
   }
+  
+  // appropriate error messages below the input fields on wrong validation
   public getErrorMessage(type:string, group:FormGroup):string {
     let error:string = "Please enter in correct format";
     if(type === "email"){

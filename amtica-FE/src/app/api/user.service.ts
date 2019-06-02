@@ -27,6 +27,7 @@ export class UserService {
     .pipe(catchError(this.handleErrorApi))
   }
 
+  // api to check whether user is login or not
   public loginStatusApi(): Observable<any> {
     return this.http.get(`${this.baseUrl}users/loginStatus/`)
     .pipe(catchError(this.handleErrorApi))
